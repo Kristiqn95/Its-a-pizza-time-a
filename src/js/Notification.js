@@ -1,3 +1,5 @@
+import { formatCurrency } from "./utils";
+import classNames from "classnames";
 export default class Notification {
   static get types() {
     return {
@@ -10,9 +12,19 @@ export default class Notification {
   constructor() {
     this.container = document.createElement("div");
     this.container.classList.add("notification-container");
+    if (this._type === Notification.types.HAWAIIAN) {
+      this.container.classList.add("is-danger");
+    }
+  }
+
+  empty(){
+    this.container.remove();
   }
 
   render() {
+    const isHawaiian = type === Notification.types.HAWAIIAN;
+    // questionable requirement but ok ${isHawaiian ? " is-danger" : ""}  why classNames
+    const cNames = classNames(`notification type-${type}`,{ 'is-danger': isHawaiian});
     const template = `
 <div class="notification type-pepperoni">
   <button class="delete"></button>
@@ -21,5 +33,7 @@ export default class Notification {
     `;
 
     this.container.innerHTML = template;
+    const deleteButton = this.container.querySelector(".delete");
+    deleteButton.onclick = () => this.empty();
   }
 }
