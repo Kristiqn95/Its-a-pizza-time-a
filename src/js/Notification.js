@@ -21,15 +21,15 @@ export default class Notification {
     this.container.remove();
   }
 
-  render() {
+  render({type, price}) {
     const isHawaiian = type === Notification.types.HAWAIIAN;
-    // questionable requirement but ok ${isHawaiian ? " is-danger" : ""}  why classNames
-    const cNames = classNames(`notification type-${type}`,{ 'is-danger': isHawaiian});
+    // questionable requirement ${isHawaiian ? " is-danger" : ""}
+    const cNames = classNames(`notification type-${type}`, { 'is-danger': isHawaiian });
     const template = `
-<div class="notification type-pepperoni">
-  <button class="delete"></button>
-  🍕 <span class="type">pepperoni</span> (<span class="price">0,00</span>) has been added to your order.
-</div>
+      <div class="${cNames}">
+        <button class="delete"></button>
+        🍕 <span class="type">${type}</span> (<span class="price">${formatCurrency(price)}</span>) has been added to your order.
+      </div>
     `;
 
     this.container.innerHTML = template;
